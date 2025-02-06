@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Entry</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+    }
+    .message {
+      margin-top: 10px;
+      color: green;
+    }
+    .error {
+      border: 2px solid #ff4444;
+    }
+    .error-message {
+      color: #ff4444;
+      font-size: 0.9em;
+      margin-top: 4px;
+      display: none;
+    }
+    .loading {
+      display: inline-block;
+      margin-left: 8px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Manual Data Entry</h1>
+    <form id="manualEntryForm" onsubmit="return validateForm()">
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required />
+      <div class="error-message" data-for="date"></div>
+
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" required />
+      <div class="error-message" data-for="description"></div>
+
+      <label for="hours">Hours:</label>
+      <input type="number" id="hours" name="hours" required min="0" step="0.1" />
+      <div class="error-message" data-for="hours"></div>
+
+      <label for="workType">Work Type:</label>
+      <select id="workType" name="workType" required>
+        <option value="">Select a work type</option>
+        <option value="manual">Manual</option>
+        <option value="meeting">Meeting</option>
+        <option value="design">Design Session</option>
+        <option value="other">Other</option>
+      </select>
+      <div class="error-message" data-for="workType"></div>
+
+      <input type="hidden" id="designerId" name="designerId" value="designer1" />
+
+      <button type="submit">
+        <span class="submit-text">Submit Entry</span>
+        <span class="loading" hidden>Processing...</span>
+      </button>
+    </form>
+    <div class="message" id="message"></div>
+  </div>
+  <script>
+    function showError(field, message) {
+      const input = document.getElementById(field);
+      const errorDiv = document.querySelector(`[data-for="${field}"]`);
+      input.classList.add('error');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function clearError(field) {
+      const input = document.getElementById(field);
+      const errorDiv = document.querySelector(`[data-for="${field}"]`);
+      input.classList.remove('error');
+      errorDiv.textContent = '';
+      errorDiv.style.display = 'none';
+    }
+
+    function validateForm() {
+      const fields = ['designerId', 'date', 'description', 'hours', 'workType'];
+      let isValid = true;
+      
+      fields.forEach(field => {
+        const input = document.getElementById(field);
+        const errorElement = document.querySelector(`[data-for="${field}"]`);
+        if (!input.value.trim()) {
+          isValid = false;
+          input.classList.add('error');
+          errorElement.innerText = 'This field is required';
+          errorElement.style.display = 'block';
+        } else {
+          input.classList.remove('error');
+          errorElement.style.display = 'none';
+        }
+      });
+      
+      if (!isValid) {
+        alert('Please fill all required fields');
+        return false;
+      }
+      return true;
+    }
+    
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('blur', () => {
+        if (!input.value.trim()) {
+          showError(input.id, 'This field is required');
+        } else {
+          clearError(input.id);
+        }
+      });
+    });
+
+    document.getElementById('manualEntryForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const date = document.getElementById('date').value;
+      const description = document.getElementById('description').value;
+      const hours = document.getElementById('hours').value;
+      const workType = document.getElementById('workType').value;
+      const designerId = document.getElementById('designerId').value;
+      
+      // Our API uses the 'source' field to record the work type.
+      const payload = { designerId, date, description, hours, source: workType };
+      
+      try {
+        const response = await fetch('/api/manual-entry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+          throw new Error('Failed to submit entry');
+        }
+        const result = await response.json();
+        document.getElementById('message').innerText = 'Entry submitted successfully!';
+        // Clear the form after successful submission.
+        document.getElementById('manualEntryForm').reset();
+      } catch (error) {
+        document.getElementById('message').innerText = error.message;
+      }
+    });
+  </script>
+</body>
+</html>

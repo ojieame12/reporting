@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .actions button {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User Management</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Designer ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Last Login</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>designer1</td>
+          <td>Alice</td>
+          <td>alice@example.com</td>
+          <td>Designer</td>
+          <td>Active</td>
+          <td>2025-02-06</td>
+          <td class="actions">
+            <button>Edit</button>
+            <button>Deactivate</button>
+            <button>Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>designer2</td>
+          <td>Bob</td>
+          <td>bob@example.com</td>
+          <td>Designer</td>
+          <td>Inactive</td>
+          <td>2025-02-05</td>
+          <td class="actions">
+            <button>Edit</button>
+            <button>Activate</button>
+            <button>Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

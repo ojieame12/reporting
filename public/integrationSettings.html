@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integration Settings</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background-color: #f5f5f5; 
+      margin: 0; 
+      padding: 20px; 
+    }
+    .container { 
+      max-width: 600px; 
+      margin: auto; 
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    }
+    label { 
+      display: block; 
+      margin-top: 10px; 
+    }
+    input { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 5px; 
+      box-sizing: border-box;
+    }
+    button { 
+      margin-top: 15px; 
+      padding: 10px 20px; 
+    }
+    #message { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Integration Settings</h1>
+    <form id="integrationSettingsForm">
+      <label for="jiraUrl">Jira API URL:</label>
+      <input type="url" id="jiraUrl" name="jiraUrl" placeholder="https://jira.example.com/api" required>
+
+      <label for="jiraToken">Jira API Token:</label>
+      <input type="text" id="jiraToken" name="jiraToken" placeholder="Enter Jira token" required>
+
+      <label for="figmaUrl">Figma API URL:</label>
+      <input type="url" id="figmaUrl" name="figmaUrl" placeholder="https://api.figma.com" required>
+
+      <label for="figmaToken">Figma API Token:</label>
+      <input type="text" id="figmaToken" name="figmaToken" placeholder="Enter Figma token" required>
+
+      <button type="submit">Save Settings</button>
+      <button type="button" id="testConnection">Test Connection</button>
+    </form>
+    <div id="message"></div>
+  </div>
+  <script>
+    document.getElementById('testConnection').addEventListener('click', function() {
+      document.getElementById('message').innerText = 'Test connection successful!';
+    });
+    document.getElementById('integrationSettingsForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('message').innerText = 'Settings saved successfully!';
+    });
+  </script>
+</body>
+</html>

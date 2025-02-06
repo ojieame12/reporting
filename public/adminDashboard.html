@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrator Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      height: 100vh;
+      padding: 20px;
+    }
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+    .metric {
+      margin-bottom: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="/public/adminDashboard.html">Dashboard</a>
+    <a href="/public/userManagement.html">User Management</a>
+    <a href="/public/integrationSettings.html">Integration Settings</a>
+    <a href="/public/login.html">Logout</a>
+  </div>
+  <div class="content">
+    <h1>Team Analytics</h1>
+    <div class="metric">
+      <strong>Total Entries: </strong><span id="totalEntries">Loading...</span>
+    </div>
+    <div class="metric">
+      <strong>Total Hours: </strong><span id="totalHours">Loading...</span>
+    </div>
+    <h2>User List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Designer ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Last Login</th>
+        </tr>
+      </thead>
+      <tbody id="userTable">
+        <tr>
+          <td>designer1</td>
+          <td>Alice</td>
+          <td>alice@example.com</td>
+          <td>2025-02-06</td>
+        </tr>
+        <tr>
+          <td>designer2</td>
+          <td>Bob</td>
+          <td>bob@example.com</td>
+          <td>2025-02-05</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // Fetch aggregated analytics for the team
+    fetch('/api/analytics/summary')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('totalEntries').innerText = data.totalEntries;
+        document.getElementById('totalHours').innerText = data.totalHours;
+      })
+      .catch(error => console.error('Error fetching analytics:', error));
+  </script>
+</body>
+</html>
